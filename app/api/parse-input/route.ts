@@ -67,8 +67,14 @@ You must always respond with a JSON object containing:
     if (!content) throw new Error("No content from AI");
     const extractedData = JSON.parse(content);
     return NextResponse.json(extractedData);
-  } catch (error) {
+  } catch (error: any) {
     console.error("AI Processing Error:", error);
+    if (error?.status === 429) {
+      return NextResponse.json(
+        { error: "Rate limit exceeded. The Google Gemini API is receiving too many requests right now. Please wait a minute before trying again." },
+        { status: 429 }
+      );
+    }
     return NextResponse.json(
       { error: "Failed to process data with AI" },
       { status: 500 },

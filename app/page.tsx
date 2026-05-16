@@ -113,14 +113,14 @@ export default function Home() {
         setFormData(updatedData);
       }
       setVoiceStatus("Filled successfully!");
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
       setVoiceStatus("Failed to parse text.");
       setMessages((prev) => [
         ...prev,
         {
           role: "assistant",
-          content: "Sorry, I encountered an error. Could you try again?",
+          content: err.message || "Sorry, I encountered an error. Could you try again?",
         },
       ]);
     } finally {
